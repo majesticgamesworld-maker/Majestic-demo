@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+Disallow: /*?page=
+Disallow: /*?category=
+Disallow: /*?product=
+
+Sitemap: https://majesticgames.co.ke/sitemap.xml
