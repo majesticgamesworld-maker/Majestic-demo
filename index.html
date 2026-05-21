@@ -6,6 +6,9 @@
   <title>Majestic Games & Toys World - Kenya Board Games Store</title>
   <meta name="description" content="Kenya's #1 destination for board games, card games, puzzles, and toys. Same-day delivery in Nairobi. 200+ games in stock." />
   <meta name="keywords" content="board games Kenya, card games Nairobi, puzzles Kenya, toys Nairobi, Majestic Games" />
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'self'; object-src 'none'; img-src 'self' https: data:; script-src 'self' 'unsafe-inline'; script-src-attr 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; frame-src https://maps.google.com https://www.google.com; connect-src 'self'; form-action 'self'; upgrade-insecure-requests" />
+  <meta name="referrer" content="strict-origin-when-cross-origin" />
   <meta property="og:title" content="Majestic Games & Toys World" />
   <meta property="og:description" content="200+ board games, card games, puzzles & toys. Same-day delivery across Nairobi." />
   <meta property="og:image" content="https://majesticgames.co.ke/images/branding/LOGOF2.png" />
@@ -51,9 +54,21 @@
   <link rel="stylesheet" href="base.css" />
   <link rel="stylesheet" href="header.css" />
   <link rel="stylesheet" href="home.css" />
-  <link rel="stylesheet" href="products.css" />
+  <link rel="stylesheet" href="product-layout.css" />
+  <link rel="stylesheet" href="buddy.css" />
+  <link rel="stylesheet" href="product-components.css" />
+  <link rel="stylesheet" href="recommendation.css" />
+  <link rel="stylesheet" href="product-mobile.css" />
   <link rel="stylesheet" href="cart.css" />
-  <link rel="stylesheet" href="responsive.css?v=category-shorter-20260518" />
+  <link rel="stylesheet" href="responsive-core.css" />
+  <link rel="stylesheet" href="responsive-navigation-shell.css" />
+  <link rel="stylesheet" href="responsive-catalog.css" />
+  <link rel="stylesheet" href="responsive-mobile-pages.css" />
+  <link rel="stylesheet" href="responsive-product.css" />
+  <link rel="stylesheet" href="responsive-home-contact.css" />
+  <link rel="stylesheet" href="responsive-buddy.css" />
+  <link rel="stylesheet" href="responsive-cross-page.css" />
+  <link rel="stylesheet" href="responsive-mobile-audit.css" />
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -80,6 +95,39 @@
     "currenciesAccepted": "KES",
     "paymentAccepted": ["M-Pesa", "Visa", "Mastercard", "PayPal"],
     "sameAs": ["https://wa.me/254710707973"]
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebSite",
+        "@id": "https://majesticgames.co.ke/#website",
+        "url": "https://majesticgames.co.ke/",
+        "name": "Majestic Games & Toys World",
+        "inLanguage": "en-KE",
+        "potentialAction": {
+          "@type": "SearchAction",
+          "target": "https://majesticgames.co.ke/shop/?q={search_term_string}",
+          "query-input": "required name=search_term_string"
+        }
+      },
+      {
+        "@type": "Organization",
+        "@id": "https://majesticgames.co.ke/#organization",
+        "name": "Majestic Games & Toys World",
+        "url": "https://majesticgames.co.ke/",
+        "logo": "https://majesticgames.co.ke/images/branding/LOGOF2.png",
+        "contactPoint": {
+          "@type": "ContactPoint",
+          "telephone": "+254710707973",
+          "contactType": "customer support",
+          "areaServed": "KE",
+          "availableLanguage": ["en", "sw"]
+        }
+      }
+    ]
   }
   </script>
   <script>
@@ -216,8 +264,11 @@
       </div>
     </div>
     <div class="image-zoom-stage">
-      <img id="image-zoom-img" class="image-zoom-img" src="" alt="" onclick="toggleImageZoomLevel()" />
+      <button type="button" id="image-zoom-prev" class="image-zoom-nav image-zoom-prev" onclick="changeImageZoomImage(-1)" aria-label="Previous product image">‹</button>
+      <img id="image-zoom-img" class="image-zoom-img" src="" alt="" loading="lazy" decoding="async" onclick="toggleImageZoomLevel()" />
+      <button type="button" id="image-zoom-next" class="image-zoom-nav image-zoom-next" onclick="changeImageZoomImage(1)" aria-label="Next product image">›</button>
     </div>
+    <div id="image-zoom-thumbs" class="image-zoom-thumbs" aria-label="Product image thumbnails"></div>
   </div>
 </div>
 
@@ -252,13 +303,13 @@
     </button>
   </div>
     <div class="mobile-nav-body">
-      <a href="/" class="mobile-nav-link" onclick="event.preventDefault(); navigate('home'); closeMobileNav()">Home</a>
-      <a href="/bestsellers/" class="mobile-nav-link" onclick="event.preventDefault(); navigate('bestsellers'); closeMobileNav()">Bestsellers</a>
-      <a href="/new-arrivals/" class="mobile-nav-link" onclick="event.preventDefault(); navigate('new-arrivals'); closeMobileNav()">New Arrivals</a>
-      <a href="/gift-picks/" class="mobile-nav-link" onclick="event.preventDefault(); navigate('gift-picks'); closeMobileNav()">Gift Picks</a>
+      <a href="/" class="mobile-nav-link" onclick="if(handleRouteClick(event,'home') === false){closeMobileNav();return false;} return true;">Home</a>
+      <a href="/bestsellers/" class="mobile-nav-link" onclick="if(handleRouteClick(event,'bestsellers') === false){closeMobileNav();return false;} return true;">Bestsellers</a>
+      <a href="/new-arrivals/" class="mobile-nav-link" onclick="if(handleRouteClick(event,'new-arrivals') === false){closeMobileNav();return false;} return true;">New Arrivals</a>
+      <a href="/gift-picks/" class="mobile-nav-link" onclick="if(handleRouteClick(event,'gift-picks') === false){closeMobileNav();return false;} return true;">Gift Picks</a>
       <div class="mobile-nav-section-title">Shop By Category</div>
       <div id="mobile-nav-cats"></div>
-      <a href="/contact/" class="mobile-nav-link" onclick="event.preventDefault(); navigate('contact'); closeMobileNav()">Contact</a>
+      <a href="/contact/" class="mobile-nav-link" onclick="if(handleRouteClick(event,'contact') === false){closeMobileNav();return false;} return true;">Contact</a>
     </div>
   <div class="mobile-nav-footer">
     <a href="https://wa.me/254710707973" target="_blank" rel="noopener noreferrer" class="btn-wa">
@@ -283,15 +334,15 @@
       <!-- Site Header -->
       <header class="site-header navbar" id="site-header">
         <div class="header-inner navbar-container">
-          <a href="/" class="logo-link logo" onclick="event.preventDefault(); navigate('home')">
+          <a href="/" class="logo-link logo" onclick="return handleRouteClick(event,'home')">
             <img src="images/branding/LOGOF2-transparent.png" alt="Majestic Games & Toys World" class="logo-img" loading="eager" fetchpriority="high" decoding="sync" width="270" height="76" />
           </a>
 
           <nav class="desktop-nav nav-menu" id="navMenu">
-            <a href="/" class="nav-link" data-page="home" onclick="event.preventDefault(); navigate('home')">Home</a>
-            <a href="/bestsellers/" class="nav-link" data-page="bestsellers" onclick="event.preventDefault(); navigate('bestsellers')">Bestsellers</a>
-            <a href="/new-arrivals/" class="nav-link" data-page="new-arrivals" onclick="event.preventDefault(); navigate('new-arrivals')">New Arrivals</a>
-            <a href="/gift-picks/" class="nav-link" data-page="gift-picks" onclick="event.preventDefault(); navigate('gift-picks')">Gift Picks</a>
+            <a href="/" class="nav-link" data-page="home" onclick="return handleRouteClick(event,'home')">Home</a>
+            <a href="/bestsellers/" class="nav-link" data-page="bestsellers" onclick="return handleRouteClick(event,'bestsellers')">Bestsellers</a>
+            <a href="/new-arrivals/" class="nav-link" data-page="new-arrivals" onclick="return handleRouteClick(event,'new-arrivals')">New Arrivals</a>
+            <a href="/gift-picks/" class="nav-link" data-page="gift-picks" onclick="return handleRouteClick(event,'gift-picks')">Gift Picks</a>
 
             <div class="shop-dropdown nav-item" id="shop-dropdown">
               <button class="shop-dropdown-btn" id="shop-dropdown-btn" onclick="toggleShopDropdown()" aria-haspopup="menu" aria-expanded="false" aria-controls="shop-dropdown-menu">
@@ -303,7 +354,7 @@
               </div>
             </div>
 
-            <a href="/contact/" class="nav-link" data-page="contact" onclick="event.preventDefault(); navigate('contact')">Contact</a>
+            <a href="/contact/" class="nav-link" data-page="contact" onclick="return handleRouteClick(event,'contact')">Contact</a>
           </nav>
 
           <div class="header-actions nav-icons">
@@ -429,10 +480,25 @@
 
     <section class="game-finder-section" id="game-finder">
       <div class="container">
-        <div class="text-center">
-          <span class="finder-badge">Smart Recommender</span>
-          <h2 class="finder-title">Find the right game in seconds</h2>
-          <p class="finder-subtitle">Tell Majestic Buddy who is playing, the mood, group size and budget. The recommender filters out unsuitable picks and shows safer matches.</p>
+        <div class="text-center buddy-reference-hero">
+          <div class="buddy-reference-intro">
+            <img src="images/branding/majestic-buddy-royal.png" alt="Majestic Buddy assistant" class="buddy-reference-mascot" loading="lazy" />
+            <div class="buddy-reference-bubble">
+              <span>Hey there!</span>
+              <strong>I'm Majestic Buddy.</strong>
+              <p>I'll help you find the perfect game night!</p>
+            </div>
+          </div>
+          <div class="buddy-reference-title">
+            <span class="finder-badge">Majestic Buddy</span>
+            <h2 class="finder-title">Your game night, <span>matched</span><em>AI</em></h2>
+            <p class="finder-subtitle">Choose who's playing and Buddy narrows the shelf to safer, better-fit picks.</p>
+            <small>Tell me who's playing, the vibe, time &amp; budget - I'll find the perfect games for you!</small>
+          </div>
+          <aside class="buddy-reference-ai-card">
+            <b>AI-Powered Picks</b>
+            <p>Smart matches based on your group, vibe, time &amp; budget.</p>
+          </aside>
         </div>
         <div id="finder-container"></div>
       </div>
@@ -681,7 +747,7 @@
 <div id="page-category" class="page">
 <!-- Category Header -->
 <section id="category-hero-section" class="hero-section">
-    <img id="category-hero-bg" class="category-hero-bg" src="images/background images/Board games.png" alt="" aria-hidden="true" loading="eager" fetchpriority="high" />
+    <img id="category-hero-bg" class="category-hero-bg" src="images/background images/Board games.webp" alt="" aria-hidden="true" loading="eager" fetchpriority="high" />
       <!-- Category Content -->
     <div class="hero-content">
       <div class="container">
@@ -1382,7 +1448,14 @@
 
 <!-- Scripts -->
 <script src="products.min.js" defer></script>
-<script src="script.js?v=category-art-20260518" defer></script>
+<script src="security.js" defer></script>
+<script src="cart.js" defer></script>
+<script src="filters.js" defer></script>
+<script src="recommendations.js" defer></script>
+<script src="buddy.js" defer></script>
+<script src="search.js" defer></script>
+<script src="analytics.js" defer></script>
+<script src="script.js?v=modular-commerce-20260521" defer></script>
 </body>
 </html>
 
